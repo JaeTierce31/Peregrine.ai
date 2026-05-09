@@ -1,10 +1,11 @@
-'use client';
-import { ReactNode } from 'react';
+import { GestureProvider } from '@/lib/device';
 
-export default function MobileLayout({ children }: { children: ReactNode }) {
+export default function MobileLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen w-screen overflow-hidden bg-peregrine-dark">
-      {children}
-    </div>
+    <GestureProvider>
+      <div className="h-screen w-screen overflow-hidden bg-peregrine-dark">
+        {children}
+      </div>
+    </GestureProvider>
   );
 }

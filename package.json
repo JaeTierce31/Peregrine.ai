@@ -9,8 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:generate": "drizzle-kit generate --config drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config drizzle.config.ts",
     "billing:sync": "usebilling sync",
     "worker:dev": "wrangler dev --config workers/collab-worker/wrangler.toml",
     "worker:deploy": "wrangler deploy --config workers/collab-worker/wrangler.toml"
@@ -41,6 +41,8 @@
     "typescript": "^5.4.0",
     "@types/react": "^18.3.0",
     "drizzle-kit": "^0.24.0",
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
   }
 }
