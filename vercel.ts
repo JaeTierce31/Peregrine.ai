@@ -1,4 +1,4 @@
-import { routes, type VercelConfig } from '@vercel/config/v1';
+import { type VercelConfig } from '@vercel/config/v1';
 
 export const config: VercelConfig = {
   framework: 'nextjs',
@@ -7,9 +7,12 @@ export const config: VercelConfig = {
   installCommand: 'npm ci',
   headers: [
     // SharedArrayBuffer support — required for xterm.js web workers
-    routes.header('/(.*)', {
-      'Cross-Origin-Embedder-Policy': 'credentialless',
-      'Cross-Origin-Opener-Policy': 'same-origin',
-    }),
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
+        { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+      ],
+    },
   ],
 };
