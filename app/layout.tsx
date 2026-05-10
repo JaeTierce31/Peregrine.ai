@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { ClerkProvider, SignInButton, SignUpButton, UserButton, Show } from '@clerk/nextjs';
+import { Analytics } from '@vercel/analytics/next';
 
 export const viewport: Viewport = {
   themeColor: '#0F172A',
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </header>
           {children}
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
