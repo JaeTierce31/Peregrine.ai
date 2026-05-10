@@ -45,3 +45,6 @@ public/workbox-*.js.map
 
 # local db files
 *.db
+public/sw.js
+public/workbox-*.js
+public/fallback-*.js

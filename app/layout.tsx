@@ -1,12 +1,15 @@
 import './globals.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
+
+export const viewport: Viewport = {
+  themeColor: '#0F172A',
+};
 
 export const metadata: Metadata = {
   title: 'Peregrine',
   description: 'Code at the speed of flight.',
   manifest: '/manifest.json',
-  themeColor: '#0F172A',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
