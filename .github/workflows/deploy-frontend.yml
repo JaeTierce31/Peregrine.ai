@@ -1,9 +1,15 @@
-name: Deploy Frontend (Vercel)
+name: CI — Type Check & Lint
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
+# Vercel deploys automatically via its native GitHub integration.
+# This workflow only validates the build so broken code never reaches production.
+
 jobs:
-  deploy:
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -12,19 +18,5 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-        env:
-          TURSO_DB_URL: ${{ secrets.TURSO_DB_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
-          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      - run: npx tsc --noEmit
+      - run: npm run lint
