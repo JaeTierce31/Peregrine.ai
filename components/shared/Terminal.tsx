@@ -28,6 +28,8 @@ export default function Terminal({ onReady }: TerminalProps) {
     })();
 
     return () => term?.dispose();
+  // onReady is a mount-only callback; intentionally excluded from deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div ref={containerRef} className="h-full w-full" />;
