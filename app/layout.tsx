@@ -29,18 +29,22 @@ export const metadata: Metadata = {
   },
 };
 
+const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-          <meta name="apple-mobile-web-app-title" content="Peregrine" />
-          <link rel="icon" href="/icons/icon-192.png" />
-        </head>
-        <body className="bg-peregrine-dark text-white">{children}</body>
-      </html>
-    </ClerkProvider>
+  const inner = (
+    <html lang="en">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Peregrine" />
+        <link rel="icon" href="/icons/icon-192.png" />
+      </head>
+      <body className="bg-peregrine-dark text-white">{children}</body>
+    </html>
   );
+
+  if (!clerkKey) return inner;
+
+  return <ClerkProvider publishableKey={clerkKey}>{inner}</ClerkProvider>;
 }
