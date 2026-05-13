@@ -41,19 +41,27 @@ drizzle/
 
 ## Environment Variables
 
-| Variable | Where Used |
-|---|---|
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk client-side |
-| `CLERK_SECRET_KEY` | Clerk server-side |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe client |
-| `STRIPE_SECRET_KEY` | Stripe server |
-| `STRIPE_RESTRICTED_KEY` | Stripe webhook validation |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook (obtain from dashboard) |
-| `NEXT_PUBLIC_CF_WORKER_URL` | Cloudflare collab worker WS URL |
-| `TURSO_DB_URL` | Turso database URL |
-| `TURSO_AUTH_TOKEN` | Turso auth token |
+| Variable | Where Used | Value / Source |
+|---|---|---|
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk client-side | Clerk dashboard |
+| `CLERK_SECRET_KEY` | Clerk server-side | Clerk dashboard |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe client | Stripe dashboard |
+| `STRIPE_SECRET_KEY` | Stripe server | Stripe dashboard |
+| `STRIPE_RESTRICTED_KEY` | Stripe webhook validation | Stripe dashboard |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook | Stripe → Webhooks → endpoint secret |
+| `NEXT_PUBLIC_CF_WORKER_URL` | Cloudflare collab worker WS URL | `wss://peregrine-collab.<subdomain>.workers.dev` after deploy |
+| `DATABASE_URL` | Supabase Postgres (Drizzle) | Supabase dashboard → Settings → Database → Connection string (Transaction mode) |
 
 All vars must be set in Vercel → Settings → Environment Variables for Production + Preview.
+
+## Supabase Project
+
+- **Project**: `peregrine-ai` (`zaeximrqiulvhzynnhfe`)
+- **Org**: JAY•TIERS•INNOVATION (`axlnxkmdsediavdqlwbk`)
+- **URL**: `https://zaeximrqiulvhzynnhfe.supabase.co`
+- **Anon key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphZXhpbXJxaXVsdmh6eW5uaGZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2Mjk3OTIsImV4cCI6MjA5NDIwNTc5Mn0.JrKl-vjATxwQ7tpqUjsxF2m2c5rMHZuySGmatUD9eF4`
+- **Tables**: `users`, `projects`, `files` (migrations already applied)
+- **DATABASE_URL**: Get from Supabase → Settings → Database → Connection string (Transaction pooler, port 6543)
 
 ## Git & PR Workflow
 
@@ -77,11 +85,12 @@ npm run db:studio    # Drizzle Studio (local DB UI)
 
 ## Pending Setup
 
-- [ ] Set `TURSO_DB_URL` + `TURSO_AUTH_TOKEN` in Vercel → run `npm run db:migrate`
-- [ ] Obtain `STRIPE_WEBHOOK_SECRET` from Stripe dashboard → add to Vercel
-- [ ] Deploy Cloudflare Worker: `./scripts/deploy-worker.sh` (needs `CF_API_TOKEN`)
-- [ ] DNS: point `peregrine.dev` → Vercel; `collab.peregrine.dev` → Cloudflare Worker
-- [ ] Set `NEXT_PUBLIC_CF_WORKER_URL=wss://collab.peregrine.dev` in Vercel Production
+- [x] Supabase DB created + migrations applied (`zaeximrqiulvhzynnhfe`)
+- [ ] Add `DATABASE_URL` to Vercel (from Supabase → Settings → Database → Transaction pooler URL)
+- [ ] Obtain `STRIPE_WEBHOOK_SECRET`: Stripe dashboard → Webhooks → Add endpoint → `https://peregrine-ai-sandy.vercel.app/api/stripe/webhook` → events: `customer.subscription.*`
+- [ ] Deploy Cloudflare Worker: `CLOUDFLARE_API_TOKEN=xxx ./scripts/deploy-worker.sh` (get token from dash.cloudflare.com/profile/api-tokens with Workers:Edit permission)
+- [ ] Set `NEXT_PUBLIC_CF_WORKER_URL` in Vercel after worker deploy
+- [ ] DNS: `peregrine.dev` A record → Vercel; `collab.peregrine.dev` CNAME → worker URL
 
 ## Claude Code Workflow Conventions
 
