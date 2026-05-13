@@ -1,16 +1,6 @@
-import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "../drizzle/schema";
 
-// Server-side client (used in API routes)
-export const serverDb = createClient({
-  url: process.env.TURSO_DB_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
-
-// Client-side embedded replica creator (used in browser)
-export function createLocalDb(projectId: string) {
-  return createClient({
-    url: `file:project-${projectId}.db`,
-    syncUrl: process.env.NEXT_PUBLIC_TURSO_SYNC_URL!,
-    authToken: process.env.NEXT_PUBLIC_TURSO_AUTH_TOKEN!,
-  });
-}
+const client = postgres(process.env.DATABASE_URL!);
+export const db = drizzle(client, { schema });
